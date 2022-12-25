@@ -1,0 +1,67 @@
+
+1.  Following are the changes that can be made to our environment to prevent an SSH brute force attack from the internet.
+ i. Change the InstanceRolePolicy-C3 to as below
+	{
+    		"Version": "2012-10-17",
+    		"Statement": [
+        		{
+            			"Sid": "FreeRecipesReadOnly",
+            			"Effect": "Allow",
+            			"Action": "s3:GetObject",
+            			"Resource": "arn:aws:s3:::cand-c3-free-recipes-930497416425/*"
+        		},
+        		{
+            			"Effect": "Deny",
+            			"Action": "s3:GetObject",
+            			"NotResource": [
+               		 	"arn:aws:s3:::cand-c3-free-recipes-930497416425",
+                		"arn:aws:s3:::cand-c3-free-recipes-930497416425/*"
+            			]
+        		}
+    		]
+	}
+ii. Change the security group WebAppSG Ingress rule to only allow access to application instance on port 5000 which will be used to gateway load balancer and restrict all other ports including 22.
+
+	WebAppSG:
+  		Type: AWS::EC2::SecurityGroup
+  		Properties:
+    		GroupName: WebAppSG
+    		GroupDescription: "Security group for this application server"
+    		SecurityGroupEgress:
+    		- IpProtocol: -1
+      		  CidrIp: 0.0.0.0/0
+    		SecurityGroupIngress:
+    		- IpProtocol: tcp
+      		   FromPort: 5000
+      		   ToPort: 5000
+      		   CidrIp: 0.0.0.0/0
+    	VpcId: !ImportValue VpcId
+
+2. We can prevent access to sensitive data in secretes recipes bucket even in the instance that API credentials were compromised by following the below steps
+	i. Enforce least privilege read only access to free recipes bucket and Deny all access to secrete recipes bucket. Below policy should guarantee this objective.
+		{
+            		"Sid": "FreeRecipesReadOnly",
+            		"Effect": "Allow",
+            		"Action": "s3:GetObject",
+            		"Resource": "arn:aws:s3:::cand-c3-free-recipes-930497416425/*"
+        		},
+        		{
+            		"Effect": "Deny",
+            		"Action": "s3:GetObject",
+            		"NotResource": [
+                			"arn:aws:s3:::cand-c3-free-recipes-930497416425",
+                			"arn:aws:s3:::cand-c3-free-recipes-930497416425/*"
+            		]
+        		}
+ii. Enable server side encryption on s3 bucket
+	"BucketEncryption": {
+                    "ServerSideEncryptionConfiguration": [
+                        {
+                            "ServerSideEncryptionByDefault": {
+                                "SSEAlgorithm": "aws:kms",
+                                "KMSMasterKeyID": "KMS-KEY-ARN"
+                            },
+                            "BucketKeyEnabled": true
+                        }
+                    ]
+                }

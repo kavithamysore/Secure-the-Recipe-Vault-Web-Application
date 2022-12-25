@@ -1,0 +1,17 @@
+Following are the vulnerabilities appear to be related to the code that was deployed for the environment in this project.
+
+1. securityhub-s3-bucket-server-side-encryption-enabled-5ccf2f06 - Non Compliant
+2. securityhub-s3-bucket-level-public-access-prohibited-bc01393c - Non Compliant
+3. securityhub-s3-lifecycle-policy-check-25806657 - Non Compliant
+4. securityhub-s3-account-level-public-access-blocks-periodic-e511f49f  - Non Comppliant
+5. Security groups should not allow ingress from 0.0.0.0/0 to port 22
+6. Ensure no security groups allow ingress from 0.0.0.0/0 to port 3389
+7. The VPC default security group should not allow inbound and outbound traffic
+8. VPC flow logging should be enabled in all VPCs
+
+The way to remediate these vulnerabilities are by following the below steps
+1. Disabling public access to s3 bucket
+2. Enable server side encryption on s3 buckets
+3. Restrict access to S3 by bucket enforcing Least Privileged access IAM Policy
+4. Restrict ssh access to application instance via port 22 by allowing only access from load balance via port 5000
+5. Configure all VPC default security groups to restrict all traffic will encourage least privilege security group development and mindful placement of AWS resources into security groups which will in-turn reduce the exposure of those resources.

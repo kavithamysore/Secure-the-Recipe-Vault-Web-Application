@@ -1,0 +1,5 @@
+
+    GuardDuty detected the SSH BruteForce attack on EC2 instance by looking for compromised EC2 instances talking to malicious entities or services, data exfiltration attempts.
+GuardDuty voraciously consumes multiple data streams, including several threat intelligence feeds, staying aware of malicious IP addresses, devious domains, and more importantly, learning to accurately identify malicious or unauthorized behavior in your AWS accounts.
+In combination with information gleaned from your VPC Flow Logs, AWS CloudTrail Event Logs, and DNS logs, this allows GuardDuty to detect many different types of dangerous and mischievous behavior including probes for known vulnerabilities, port scans and probes, and access from unusual locations.
+On the AWS side, it looks for suspicious AWS account activity such as unauthorized deployments, unusual CloudTrail activity, patterns of access to AWS API functions, and attempts to exceed multiple service limits.

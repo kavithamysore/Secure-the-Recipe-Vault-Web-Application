@@ -1,0 +1,10 @@
+a. Scan infrastructure as code templates: Regula
+	Identifying overly permissive IAM policy is an example compliance violoation which Regula can expose.
+
+b. Scan AMI’s or containers for OS vulnerabilities: Aquasec
+    Aquasec can scan Container Images for Vulnerabilities and expose advanced threats like Hidden Malware which static scanning cannot spot.
+
+c. Scan an AWS environment for cloud configuration vulnerabilities: Fugue
+    Fugue scans the cloud infrastructure in a Penvironment and identifies compliance violations according to the compliance families we choose.
+    You may optionally set a baseline and Fugue will detect when resources drift from that baseline.
+    You can also choose to enable enforcement(AWS & AWS GovCloud), and Fugue will remediate drift, automatically reverting changes and returning infrastructure back to the known-good state of your baseline.

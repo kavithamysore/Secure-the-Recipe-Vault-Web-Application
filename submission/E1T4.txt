@@ -1,0 +1,11 @@
+
+Two poor security practices in the given design are:
+
+1. S3 buckets are publicly accessible:
+Publicly accessible S3 buckets allow malicious users to access sensitive data inside S3 buckets which can lead to misuse of the data.
+Unless explicitly required anyone on the internet to be able to read or write to S3 bucket, we should ensure that your S3 bucket is not public.
+
+
+2. S3 buckets have server side encryption disabled:
+Server-side encryption can help reduce risk to data by encrypting the data with a key that is stored in a different mechanism than the mechanism that stores the data itself.
+Having server side encryption disabled will pose the risk of data being misused in the event the application instance primary key is compromised.
