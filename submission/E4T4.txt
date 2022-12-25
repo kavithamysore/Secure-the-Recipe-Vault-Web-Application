@@ -1,0 +1,22 @@
+1. What additional architectural change can be made to reduce the internet-facing attack surface of the web application instance.
+We can change the architecture for allow web application instance to use Elastic Load Balancing and  create one security group for the Elastic Load Balancing (Elastic Load Balancing security group) and one for the instances (web application server security group).
+We can then create an allow rule to permit internet traffic to the ELB security group, and another rule to permit traffic from the ELB security group to the web application server security group.
+This ensures that internet traffic can’t directly communicate with web application  instance, which makes it more difficult for an attacker to learn about and impact your application.
+If subscribed to AWS Shield Advanced, we can register Elastic IP addresses as Protected Resources.
+DDoS attacks against Elastic IP addresses that have been registered as Protected Resources are detected more quickly, which can result in a faster time to mitigate.
+When an attack is detected, the DDoS mitigation systems read the network ACL that corresponds to the targeted Elastic IP and enforce it at the AWS network border.
+This significantly reduces your risk of impact from a number of infrastructure layer DDoS attacks.
+
+2. Assuming the IAM permissions for the S3 bucket are still insecure, would creating VPC private endpoints for S3 prevent the unauthorized access to the secrets bucket.
+ 	VPC private endpoints for S3 simplify access to S3 from within a VPC by providing configurable and highly reliable secure connections to S3 that do not require an internet gateway or Network Address Translation (NAT) device.
+ 	When we create a S3 VPC endpoint, we can attach an endpoint policy to it that controls access to Amazon S3. As the VPC private endpoint totally restricts internet access to S3 bucket, S3 buckets are still secured from internet attacks.
+ 	However, VPC end point policies should still be enforced to secure S3 bucket contents from within VPC.
+
+3. Will applying default encryption setting to the s3 buckets encrypt the data that already exists?
+	 Applying default encryption setting to the s3 buckets automates the encryption of new objects in the bucket, but default encryption does not change the encryption of existing objects in the same bucket.
+
+4. The changes you made above were done through the console or CLI; describe the outcome if the original cloud formation templates are applied to this environment?
+	I made these changes from the console. AWS doesn’t allow me to apply original cloud formation templates as the stacks are already created with the given names. I would get following error.
+Kavithas-MBP:nd063-c3-design-for-security-project-starter kavitha$ aws cloudformation create-stack --region us-east-1 --stack-name c3-app --template-body file://starter/c3-app.yml --parameters ParameterKey=KeyPair,ParameterValue=create-stack-key --capabilities CAPABILITY_IAM
+
+An error occurred (AlreadyExistsException) when calling the CreateStack operation: Stack [c3-app] already exists
